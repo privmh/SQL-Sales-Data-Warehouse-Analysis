@@ -21,24 +21,18 @@
 CREATE OR ALTER PROCEDURE bronze.load_bronze 
 AS 
 BEGIN
-    -- ==========================================
+
     -- DECLARE VARIABLES
-    -- ==========================================
     DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
 
     BEGIN TRY
-        -- ==========================================
         -- START BATCH LOADING TIMER
-        -- ==========================================
         SET @batch_start_time = GETDATE();
 
         PRINT '==========================================';
         PRINT 'Loading Bronze Layer';
         PRINT '==========================================';
 
-        -- ==========================================
-        -- LOAD CRM TABLES
-        -- ==========================================
         PRINT '------------------------------------------';
         PRINT 'Loading CRM Tables';
         PRINT '------------------------------------------';
@@ -85,9 +79,6 @@ BEGIN
         PRINT 'crm_sales_details Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '------------------------------------------';
 
-        -- ==========================================
-        -- LOAD ERP TABLES
-        -- ==========================================
         PRINT '------------------------------------------';
         PRINT 'Loading ERP Tables';
         PRINT '------------------------------------------';
@@ -134,9 +125,6 @@ BEGIN
         PRINT 'erp_px_cat_g1v2 Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '------------------------------------------';
 
-        -- ==========================================
-        -- END BATCH LOADING TIMER
-        -- ==========================================
         SET @batch_end_time = GETDATE();
         PRINT 'Total Bronze Layer Loading Duration: ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
         PRINT '------------------------------------------';
