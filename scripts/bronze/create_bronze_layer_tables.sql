@@ -1,11 +1,11 @@
 /*
 --------------------------------------------------------------------------------
- Description  : 
-                This script creates and initializes the tables in the 'bronze' 
+ Description  : This script creates and initializes the tables in the 'bronze' 
                 layer of a data warehouse. It first checks for the existence of 
                 each table and drops it if present, then recreates the table 
                 structure. These tables are typically used for raw ingestion 
                 from CRM and ERP systems.
+
  Tables Created:
     - bronze.crm_cust_info
     - bronze.crm_prd_info
