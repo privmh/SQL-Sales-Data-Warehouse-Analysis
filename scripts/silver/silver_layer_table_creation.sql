@@ -68,11 +68,11 @@ CREATE TABLE silver.erp_cust_az12 (
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
--- Drop and create silver.erp_loc_101 table
-IF OBJECT_ID('silver.erp_loc_101','U') IS NOT NULL
-    DROP TABLE silver.erp_loc_101;
+-- Drop and create silver.erp_loc_a101 table
+IF OBJECT_ID('silver.erp_loc_a101','U') IS NOT NULL
+    DROP TABLE silver.erp_loc_a101;
 GO
-CREATE TABLE silver.erp_loc_101 (
+CREATE TABLE silver.erp_loc_a101 (
     cid NVARCHAR(50),
     cntry NVARCHAR(50),
     dwh_create_date DATETIME2 DEFAULT GETDATE()
