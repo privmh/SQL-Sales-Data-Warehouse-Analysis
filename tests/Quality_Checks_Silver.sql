@@ -170,7 +170,7 @@ FROM bronze.erp_cust_az12;
 
 -- DATA STANDARDIZATION & CONSISTENCY
 SELECT distinct cntry
-FROM bronze.erp_loc_101
+FROM bronze.erp_loc_a101
 
 -- ====================================================================
 -- Checking 'silver.erp_px_cat_g1v2'
@@ -192,5 +192,4 @@ FROM bronze.erp_px_cat_g1v2;
 
 SELECT DISTINCT maintenance 
 FROM bronze.erp_px_cat_g1v2;
-
 
