@@ -9,7 +9,7 @@
     - bronze.crm_prd_info
     - bronze.crm_sales_details
     - bronze.erp_cust_az12
-    - bronze.erp_loc_101
+    - bronze.erp_loc_a101
     - bronze.erp_px_cat_g1v2
 
  Usage        : EXEC bronze.load_bronze;
@@ -97,10 +97,10 @@ BEGIN
         PRINT 'erp_cust_az12 Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '------------------------------------------';
 
-        -- Load erp_loc_101
+        -- Load erp_loc_a101
         SET @start_time = GETDATE();
-            TRUNCATE TABLE bronze.erp_loc_101;
-            BULK INSERT bronze.erp_loc_101
+            TRUNCATE TABLE bronze.erp_loc_a101;
+            BULK INSERT bronze.erp_loc_a101
             FROM 'D:\datasets\source_erp\LOC_A101.csv'
             WITH(
                 FIRSTROW = 2,
@@ -108,7 +108,7 @@ BEGIN
                 TABLOCK
             );
         SET @end_time = GETDATE();
-        PRINT 'erp_loc_101 Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT 'erp_loc_a101 Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
         PRINT '------------------------------------------';
 
         -- Load erp_px_cat_g1v2
