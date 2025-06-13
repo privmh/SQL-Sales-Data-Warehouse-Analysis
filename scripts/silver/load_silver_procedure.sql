@@ -20,7 +20,7 @@ Tables Affected:
     - silver.crm_prd_info
     - silver.crm_sales_details
     - silver.erp_cust_az12
-    - silver.erp_loc_101
+    - silver.erp_loc_a101
     - silver.erp_px_cat_g1v2
 
 Error Handling:
@@ -170,12 +170,12 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT '>> -------------';
 
-		-- Truncate and insert into silver.erp_loc_101 with execution time tracking.
+		-- Truncate and insert into silver.erp_loc_a101 with execution time tracking.
 		SET @start_time = GETDATE();
-		TRUNCATE TABLE silver.erp_loc_101
-		INSERT INTO silver.erp_loc_101
+		TRUNCATE TABLE silver.erp_loc_a101
+		INSERT INTO silver.erp_loc_a101
 		select 
-			cid,
+			REPLACE(cid,'-',''),
 			case
 				when upper(trim(cntry)) = 'DE' THEN 'Germany'
 				when upper(trim(cntry)) in ('US','USA') THEN 'United States'
@@ -183,7 +183,7 @@ BEGIN
 				else 
 					TRIM(cntry)
 			end as cntry
-		from bronze.erp_loc_101;
+		from bronze.erp_loc_a101;
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT '>> -------------';
