@@ -1,3 +1,22 @@
+/*
+===============================================================================
+DDL Script: Validate Gold Layer Views
+===============================================================================
+Script Purpose:
+    This script performs validation checks on views in the Gold layer of the 
+    data warehouse. The Gold layer contains the final dimension and fact tables 
+    structured in a Star Schema for analytical use.
+
+    These checks help ensure data integrity by identifying:
+        - Inconsistencies in gender data between source systems
+        - Duplicate keys in dimension tables
+        - Orphaned records in the fact table (missing dimension references)
+
+Usage:
+    - Run this script after creating or updating Gold layer views to verify 
+      data quality before using them in analytics or reporting.
+===============================================================================
+*/
 -- ====================================================================
 -- Checking 'gold.dim_customers'
 -- ====================================================================
