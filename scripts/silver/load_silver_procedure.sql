@@ -34,9 +34,9 @@ Usage:
     EXEC silver.load_silver;
 ===============================================================================
 */
-CREATE OR ALTER PROCEDURE load_silver AS
+CREATE OR ALTER PROCEDURE silver.load_silver AS
 BEGIN
-	DECLARE @start_time DATETIME,@end_time DATETIME,@batch_start_time DATETIME,@batch_end_date DATETIME;
+	DECLARE @start_time DATETIME,@end_time DATETIME,@batch_start_time DATETIME, @batch_end_time DATETIME;
 	BEGIN TRY
 		SET @batch_start_time = GETDATE();
 		PRINT '================================================';
@@ -49,7 +49,15 @@ BEGIN
 		-- Truncate and insert into silver.crm_cust_info with execution time tracking.
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE silver.crm_cust_info 
-		INSERT INTO silver.crm_cust_info 
+		INSERT INTO silver.crm_cust_info (
+			cst_id, 
+			cst_key, 
+			cst_firstname, 
+			cst_lastname, 
+			cst_marital_status, 
+			cst_gndr,
+			cst_create_date
+		)
 		select 
 			cst_id ,
 			cst_key ,
@@ -79,7 +87,16 @@ BEGIN
 		-- Truncate and insert into silver.crm_prd_info with execution time tracking.
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE silver.crm_prd_info 
-		insert into silver.crm_prd_info 
+		insert into silver.crm_prd_info(
+			prd_id,
+			cat_id,
+			prd_key,
+			prd_nm,
+			prd_cost,
+			prd_line,
+			prd_start_dt,
+			prd_end_dt
+		) 
 		select
 			prd_id,
 			REPLACE(SUBSTRING(prd_key,1,5),'-','_') AS cat_id,  -- Extract category ID
@@ -107,7 +124,17 @@ BEGIN
 		-- Truncate and insert into silver.crm_sales_details with execution time tracking.
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE silver.crm_sales_details
-		INSERT INTO silver.crm_sales_details
+		INSERT INTO silver.crm_sales_details (
+			sls_ord_num,
+			sls_prd_key,
+			sls_cust_id,
+			sls_order_dt,
+			sls_ship_dt,
+			sls_due_dt,
+			sls_sales,
+			sls_quantity,
+			sls_price
+		)
 		select 
 			sls_ord_num,
 			sls_prd_key,
@@ -150,7 +177,11 @@ BEGIN
 		-- Truncate and insert into silver.erp_cust_az12 with execution time tracking.	
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE silver.erp_cust_az12
-		INSERT INTO silver.erp_cust_az12
+		INSERT INTO silver.erp_cust_az12 (
+			cid,
+			bdate,
+			gen
+		)
 		select
 			case 
 				when cid like 'NAS%' THEN substring(cid,4,len(cid)) 
@@ -173,7 +204,10 @@ BEGIN
 		-- Truncate and insert into silver.erp_loc_a101 with execution time tracking.
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE silver.erp_loc_a101
-		INSERT INTO silver.erp_loc_a101
+		INSERT INTO silver.erp_loc_a101(
+			cid,
+			cntry
+		)
 		select 
 			REPLACE(cid,'-',''),
 			case
@@ -191,7 +225,12 @@ BEGIN
 		-- Truncate and insert into silver.erp_px_cat_g1v2 with execution time tracking.
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE silver.erp_px_cat_g1v2
-		INSERT INTO silver.erp_px_cat_g1v2
+		INSERT INTO silver.erp_px_cat_g1v2 (
+			id,
+			cat,
+			subcat,
+			maintenance
+		)
 		select
 			id,
 			cat,
@@ -201,7 +240,7 @@ BEGIN
 		SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT '>> -------------';
-	SET @batch_end_date = GETDATE();
+	SET @batch_end_time = GETDATE();
 		PRINT '=========================================='
 		PRINT 'Loading Silver Layer is Completed';
         PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
