@@ -11,7 +11,7 @@
     - bronze.crm_prd_info
     - bronze.crm_sales_details
     - bronze.erp_cust_az12
-    - bronze.erp_loc_101
+    - bronze.erp_loc_a101
     - bronze.erp_px_cat_g1v2
 
  Usage        : Run in SQL Server Management Studio or integrated pipeline.
@@ -76,11 +76,11 @@ CREATE TABLE bronze.erp_cust_az12 (
 );
 GO
 
--- Drop and Create bronze.erp_loc_101
-IF OBJECT_ID('bronze.erp_loc_101','U') IS NOT NULL
-    DROP TABLE bronze.erp_loc_101;
+-- Drop and Create bronze.erp_loc_a101
+IF OBJECT_ID('bronze.erp_loc_a101','U') IS NOT NULL
+    DROP TABLE bronze.erp_loc_a101;
 GO
-CREATE TABLE bronze.erp_loc_101 (
+CREATE TABLE bronze.erp_loc_a101 (
     cid     NVARCHAR(50),
     cntry   NVARCHAR(50)
 );
