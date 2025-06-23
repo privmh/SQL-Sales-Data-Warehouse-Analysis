@@ -1,32 +1,38 @@
 /*
 ===============================================================================
-Customer Profiling Report
+Customer Insights View: gold.report_customers
 ===============================================================================
 Purpose:
-    - To generate detailed customer-level metrics and segments.
-    - Support customer lifecycle analysis, targeting, and retention strategies.
-    - Identify high-value customers and behavioral trends.
+    - To create a reusable view that summarizes customer behavior and value.
+    - Enable segmentation, recency tracking, and lifecycle analysis.
 
-Key Metrics Calculated:
-    - Age and Age Grouping
-    - Total Orders, Sales, Quantity, Products Purchased
-    - Lifespan (Months Active)
-    - Last Order Date & Recency
-    - Customer Segments (VIP, Regular, New)
+Key Metrics Generated:
+    - Total Orders, Sales, Quantity, Unique Products
+    - Lifespan (Months Active) and Last Order Date
+    - Recency (Months Since Last Purchase)
+    - Age and Age Group Classification
+    - Customer Segments: VIP, Regular, New
     - Average Order Value (AOV)
     - Average Monthly Spend
 
 SQL Concepts Used:
+    - View Creation with DROP IF EXISTS
     - CTEs (Common Table Expressions)
+    - Aggregate Functions: SUM(), COUNT(), MAX(), MIN()
     - Date Functions: DATEDIFF(), GETDATE()
-    - Aggregations: SUM(), COUNT(), MAX()
-    - Conditional Logic: CASE
+    - CASE Statements for Segmentation
+    - Basic Error Handling (division by zero)
 
 Output:
-    - One record per customer with demographics and purchasing behavior
+    - A persistent view named `gold.report_customers` for BI reporting
 ===============================================================================
 */
 
+IF OBJECT_ID('gold.report_customers', 'V') IS NOT NULL
+    DROP VIEW gold.report_customers;
+GO
+
+CREATE VIEW gold.report_customers AS
 WITH base_query AS (
     SELECT
         f.order_number,
@@ -86,12 +92,12 @@ SELECT
     total_quantity,
     total_products,
     lifespan,
-    -- Compute Average Order Value (AOV)
+    -- Compute average order value (AOV)
     CASE 
         WHEN total_orders = 0 THEN 0
         ELSE total_sales / total_orders
     END AS avg_order_value,
-    -- Compute Average Monthly Spend
+    -- Compute average monthly spend
     CASE 
         WHEN lifespan = 0 THEN total_sales
         ELSE total_sales / lifespan
