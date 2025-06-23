@@ -1,33 +1,37 @@
 /*
 ===============================================================================
-Product Performance Report
+Product Performance View: gold.report_products
 ===============================================================================
 Purpose:
-    - To generate detailed metrics for each product across its sales history.
-    - Identify high-performing and underperforming products.
-    - Enable product lifecycle and revenue analysis.
+    - To create a reusable SQL view for product performance tracking.
+    - Enables consistent reporting across dashboards and analyses.
 
-Key Metrics Calculated:
+Key Metrics Generated:
     - Total Orders, Sales, Quantity, Unique Customers
-    - Lifespan (Months Active) and Last Sale Date
-    - Recency (Months Since Last Sale)
+    - Lifespan and Recency
     - Product Segments: High-Performer, Mid-Range, Low-Performer
     - Average Selling Price (ASP)
     - Average Order Revenue (AOR)
     - Average Monthly Revenue
 
-SQL Concepts Used:
+SQL Features Used:
+    - View Definition with IF EXISTS + DROP logic
     - CTEs (Common Table Expressions)
-    - Aggregate Functions: SUM(), COUNT(), AVG(), MAX(), MIN()
-    - Date Functions: DATEDIFF(), GETDATE()
-    - Conditional Logic: CASE
-    - Division with NULLIF to avoid division by zero
+    - Aggregates: SUM(), COUNT(), MAX(), MIN(), AVG()
+    - Date Calculations: DATEDIFF(), GETDATE()
+    - CASE Expressions for segmentation
+    - NULLIF to avoid divide-by-zero errors
 
 Output:
-    - One record per product with full performance profile
+    - A persistent view named `gold.report_products` summarizing product KPIs
 ===============================================================================
 */
 
+IF OBJECT_ID('gold.report_products', 'V') IS NOT NULL
+    DROP VIEW gold.report_products;
+GO
+
+CREATE VIEW gold.report_products AS
 WITH base_query AS (
     SELECT
         f.order_number,
